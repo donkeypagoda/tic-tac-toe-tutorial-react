@@ -1,1 +1,1 @@
-This was cobbled together from a couple of React tutorials.  All credit for anything smart probably goes to [Beau Carnes](https://github.com/beaucarnes/fcc-project-tutorials) at [FreeCodeCamp.com](https://www.freecodecamp.org/)
+This was cobbled together from a couple of React tutorials.  All credit for anything smart probably goes to either  [Beau Carnes](https://github.com/beaucarnes/fcc-project-tutorials) at [FreeCodeCamp.com](https://www.freecodecamp.org/) OR the wonderful folks at ReactJS.org who wrote [this tutorial](https://reactjs.org/tutorial/tutorial.html)
