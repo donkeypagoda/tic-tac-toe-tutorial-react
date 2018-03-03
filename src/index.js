@@ -65,18 +65,17 @@ class Game extends React.Component {
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
 
-    const rowCol = current.rowCol.slice();
-    console.log(squares)
+    const rowCol = this.state.history[this.state.history.length - 1].rowCol.slice();
 
     if (this.state.history.length > 0){
       let index = null
-      let prev = this.state.history[this.state.stepNumber - 1 ] ? this.state.history[this.state.stepNumber - 1].squares : null
-      let last = this.state.history[this.state.stepNumber].squares
+      let prev = this.state.history[this.state.stepNumber] ? this.state.history[this.state.stepNumber].squares : null
+      let last = squares
       if (prev === null) index = last.findIndex(i => i !== null)
       else {
         for (let i = 0; i < 10; i++){
           if (prev[i] !== last[i]) index = i
-        }        
+        }
       }
       if (index > -1 && index < 3){
         rowCol[0] = 1
@@ -88,10 +87,9 @@ class Game extends React.Component {
       }
       if (index > 5){
         rowCol[0] = 3
-        rowCol[1] = index - 3
+        rowCol[1] = index - 5
       }
     }
-    console.log(rowCol)
 
     this.setState({
       history: history.concat([{
@@ -135,7 +133,7 @@ class Game extends React.Component {
 
     const moves = history.map((step, move) => {
 
-      const desc = move ? "Go to move #" + move + " Row:" + this.state.history.rowCol + " Col:" + this.state.history.rowCol : "Go to game start";
+      const desc = move ? "Go to move #" + move + " Row:" + history[move].rowCol[0] + " Col:" + history[move].rowCol[1] : "Go to game start";
       return (
         <li key={move}>
           <button onClick={() => this.jumpTo(move)}>{desc}</button>
