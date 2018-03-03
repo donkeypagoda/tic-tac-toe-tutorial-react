@@ -48,10 +48,11 @@ class Game extends React.Component {
     super(props);
     this.state = {
       history: [{
-        squares: Array(9).fill(null)
+        squares: Array(9).fill(null),
+        rowCol: [null, null]
       }],
       stepNumber: 0,
-      xIsNext: true
+      xIsNext: true,
     };
   }
 
@@ -63,9 +64,39 @@ class Game extends React.Component {
       return;
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
+
+    const rowCol = current.rowCol.slice();
+    console.log(squares)
+
+    if (this.state.history.length > 0){
+      let index = null
+      let prev = this.state.history[this.state.stepNumber - 1 ] ? this.state.history[this.state.stepNumber - 1].squares : null
+      let last = this.state.history[this.state.stepNumber].squares
+      if (prev === null) index = last.findIndex(i => i !== null)
+      else {
+        for (let i = 0; i < 10; i++){
+          if (prev[i] !== last[i]) index = i
+        }        
+      }
+      if (index > -1 && index < 3){
+        rowCol[0] = 1
+        rowCol[1] = index + 1
+      }
+      if (index > 2 && index < 6){
+        rowCol[0] = 2
+        rowCol[1] = index - 2
+      }
+      if (index > 5){
+        rowCol[0] = 3
+        rowCol[1] = index - 3
+      }
+    }
+    console.log(rowCol)
+
     this.setState({
       history: history.concat([{
-        squares: squares
+        squares: squares,
+        rowCol: rowCol
       }]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
@@ -103,31 +134,8 @@ class Game extends React.Component {
     const winner = calculateWinner(current.squares);
 
     const moves = history.map((step, move) => {
-      let row = null
-      let col = null
 
-      if (history.length > 1){
-        let index = null
-        let prev = history[history.length - 2].squares
-        let last = current.squares
-        for (let i = 0; i < 10; i++){
-          if (prev[i] !== last[i]) index = i
-        }
-        if (index > -1 && index < 3){
-          row = 1
-          col = index + 1
-        }
-        if (index > 2 && index < 6){
-          row = 2
-          col = index - 2
-        }
-        if (index > 5){
-          row = 3
-          col = index - 3
-        }
-      }
-
-      const desc = move ? "Go to move #" + move + " Row:" + row + " Col:" + col : "Go to game start";
+      const desc = move ? "Go to move #" + move + " Row:" + this.state.history.rowCol + " Col:" + this.state.history.rowCol : "Go to game start";
       return (
         <li key={move}>
           <button onClick={() => this.jumpTo(move)}>{desc}</button>
