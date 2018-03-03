@@ -71,6 +71,7 @@ class Game extends React.Component {
       xIsNext: !this.state.xIsNext,
     });
   }
+
   jumpTo(step) {
     this.setState({
       stepNumber: step,
@@ -78,33 +79,53 @@ class Game extends React.Component {
     });
   }
 
+
+
+
+  rowCol(current, prev) {
+    let index = null
+    if (!prev) index = current.squares.indexOf(!null)
+    else {
+      index = current.findIndex(move => {
+        for (let i = 0; i < prev.length; i++){
+          if (current[move] !== prev[i]) return i
+        }
+      })
+    }
+    return index
+  }
+
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
 
-    let prev = true
-
-    // console.log(history[history.length - 1].squares)
-  // console.log(history.move)
-    const latestMove = (current, prev) => {
-      if (!prev) return current
-      return current.filter( (i) => {
-          if (prev.indexOf(i) < 0) {
-              return i;
-          } else {
-              return null;
-          }
-      });
-    };
-
     const moves = history.map((step, move) => {
-      if (!history[history.length - 2]) prev = false;
-      else { prev = history[history.length - 2].squares}
-      console.log(latestMove(current.squares, prev))
-      // console.log(step)
-      // console.log(move)
-      const desc = move ? "Go to move #" + move + step.squares : "Go to game start";
+      let row = null
+      let col = null
+
+      if (history.length > 1){
+        let index = null
+        let prev = history[history.length - 2].squares
+        let last = current.squares
+        for (let i = 0; i < 10; i++){
+          if (prev[i] !== last[i]) index = i
+        }
+        if (index > -1 && index < 3){
+          row = 1
+          col = index + 1
+        }
+        if (index > 2 && index < 6){
+          row = 2
+          col = index - 2
+        }
+        if (index > 5){
+          row = 3
+          col = index - 3
+        }
+      }
+
+      const desc = move ? "Go to move #" + move + " Row:" + row + " Col:" + col : "Go to game start";
       return (
         <li key={move}>
           <button onClick={() => this.jumpTo(move)}>{desc}</button>
