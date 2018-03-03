@@ -88,7 +88,9 @@ class Game extends React.Component {
     else {
       index = current.findIndex(move => {
         for (let i = 0; i < prev.length; i++){
-          if (current[move] !== prev[i]) return i
+          if (current[move] !== prev[i]) {
+            return i
+          }
         }
       })
     }
