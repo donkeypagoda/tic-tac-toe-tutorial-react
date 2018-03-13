@@ -27,10 +27,12 @@ class Board extends React.Component {
     for (let i = 0; i < 3; i++){
       boardArr.push("<div className="board-row">")
       for (let j = 0; j < 3; j++){
-        boardArr.push("")
-
+        boardArr.push("{this.renderSquare(count)}")
+        count++
       }
+      boardArr.push("</div>")
     }
+    let boardArr = boardArr.join("")
     return (
       <div>
         <div className="board-row">
