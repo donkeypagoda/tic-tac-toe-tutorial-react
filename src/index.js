@@ -132,7 +132,7 @@ class Game extends React.Component {
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
     const moves = history.map((step, move) => {
-
+      let isBold = this.state.stepNumber === move ? "bold" : " "
       const desc = move ? "Go to move #" + move + " Row:" + history[move].rowCol[0] + " Col:" + history[move].rowCol[1] : "Go to game start"
       return (
         <li className={isBold} key={move}>
